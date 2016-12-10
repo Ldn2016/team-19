@@ -82,6 +82,7 @@ function retrieveUserID($firstname, $lastname) {
 	{
 		echo "<p>You don't seem to be struggling with anything at the moment</p>";
 		echo '<a href="#" onClick="alert' . "('Have a medal!')" . '"><img title="Well Done!" /></a>" ';
+		return;
 		die();
 	}
 		//echo $results;
@@ -181,11 +182,11 @@ echo "<h1> Personalised Learning for " . $_GET['firstname'] . " " . $_GET['lastn
 echo "<hr>";
 echo "<h3>Struggling problems:</h3>";
 echo "<ul>";
+
 $user = retrieveUserID($first, $last);
 $struggling = isStruggling($user);
 echo "</ul>";
 
-echo '<form action="edulutionApp.php> <input type="submit" value="Go Back" /></form>';
 
 
 //for($i = 0; $i < count($struggling); $i++) {
@@ -196,6 +197,7 @@ echo '<form action="edulutionApp.php> <input type="submit" value="Go Back" /></f
 ?>
 
 
+<?php 		echo '<form action="edulutionApp.php"> <input type="submit" value="Go Back"> </input> </form>'; ?>
 
 <footer>
 	Edulution demo
