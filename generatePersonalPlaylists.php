@@ -185,6 +185,8 @@ $user = retrieveUserID($first, $last);
 $struggling = isStruggling($user);
 echo "</ul>";
 
+echo '<form action="edulutionApp.php> <input type="submit" value="Go Back" /></form>';
+
 
 //for($i = 0; $i < count($struggling); $i++) {
 //	$sequence = getSequence($struggling[$i]);
@@ -192,6 +194,8 @@ echo "</ul>";
 //}
 
 ?>
+
+
 
 <footer>
 	Edulution demo
