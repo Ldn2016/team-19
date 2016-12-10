@@ -77,23 +77,50 @@
 		//Will be a list of exercise_id that the student is flagged as struggling with
 	}
 
-	//errr....
-	function suggestExercise($exerciseid) {
+	function getSequence($exerciseid) {
 		try {
 			$handle = new PDO('mysql:host=127.0.0.1; dbname=edulution',
                           'root', '');//TODO DATABASE GOES HERE);
 		} catch (PDOException $e) {
 			die("Error connecting to database: ". $e->getMessage());
 		}
-		//run through the list, run sql queries for all the exerciseid in the list, getting their paths
-		//for ($i = 0; i < exerciseid.num_rows() - 1; i++) {
-		//	$sql = "SELECT exercise_id, item_path FROM Items WHERE exercise_id = "
-		//}
-		//put all the paths in an array, then choose a random one?
-		//take the path, get a new exercise id, then return the exercise id
+		$sql = "SELECT sequence FROM playlist WHERE exercise_id = $exerciseid";
+		$query = $handle->prepare($sql);
+		$query->execute();
+
+		//query fails
+		if ($query->execute() === FALSE) {
+			die('Error running query: '.implode($query->errorInfo(), ' '));
+		}
+		//puts result into assoc array
+		$results = $query->fetchAll();
+		//just get the sequence from the assoc array
+	}
+
+	//errr....
+	function suggestExercise($exerciseid, $sequence) {
+		try {
+			$handle = new PDO('mysql:host=127.0.0.1; dbname=edulution',
+                          'root', '');//TODO DATABASE GOES HERE);
+		} catch (PDOException $e) {
+			die("Error connecting to database: ". $e->getMessage());
+		}
+		$sql = "SELECT title, path FROM playlist WHERE exercise_id = $exerciseid AND sequence = $sequence";
+		$query = $handle->prepare($sql);
+		$query->execute();
+		//puts result into assoc array
+		$results = $query->fetchAll();
+
+		foreach($results as $row) {
+			echo 
+		}
 	}
 
 	$user = retrieveUserID("'Brian'", "'Chikosa'");
-	isStruggling($user);
+	$struggling = isStruggling($user);
+	for(int i = 0; i < $struggling.num_rows(); i++) {
+		$sequence = getSequence($struggling[0]);
+		
+	}
 
 ?>
