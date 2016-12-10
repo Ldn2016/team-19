@@ -1,126 +1,144 @@
 <?php
 	//Database definitions
-	$username = "root";
-	$password = "";
+$username = "root";
+$password = "";
 	//Connects to database at the same location as this script
-	mysql_connect('127.0.0.1', $username, $password);
+mysql_connect('127.0.0.1', $username, $password);
 
 	//Returns the userid of the user with the given first+lastname combination
-	function retrieveUserID($firstname, $lastname) {
-		try {
-			$handle = new PDO('mysql:host=127.0.0.1; dbname=edulution',
+function retrieveUserID($firstname, $lastname) {
+	try {
+		$handle = new PDO('mysql:host=127.0.0.1; dbname=edulution',
                           'root', '');//TODO DATABASE GOES HERE);
-		} catch (PDOException $e) {
-			die("Error connecting to database: ". $e->getMessage());
-		}
+	} catch (PDOException $e) {
+		die("Error connecting to database: ". $e->getMessage());
+	}
 		//$sql = "SELECT * FROM Users WHERE user_id = '00855a2465774deda66c0417e16c4a';";
-		$sql = "SELECT * FROM Users WHERE first_name = $firstname AND last_name = $lastname";
-		$query = $handle->prepare($sql);
-		$query->execute();
+	$sql = "SELECT * FROM Users WHERE first_name = $firstname AND last_name = $lastname";
+	$query = $handle->prepare($sql);
+	$query->execute();
 		//$query->execute(['n' => $firstname, 'm' => $lastname]);
 		//query fails
-		if ($query->execute() === FALSE) {
-			die('Error running query: '.implode($query->errorInfo(), ' '));
-		}
+	if ($query->execute() === FALSE) {
+		die('Error running query: '.implode($query->errorInfo(), ' '));
+	}
 		//puts result into assoc array
-		$results = $query->fetchAll();
+	$results = $query->fetchAll();
 
 		//TODO -------- what to do if results are empty? die() at the end
-		foreach ($results as $row) {
-      return $row['user_id'];
-   		}   
-   		if(count($results) == 0)
-    	{
-			echo "<br>";
-			echo "There are no results";
-			die();
-	    }
-		//echo $results;
+	foreach ($results as $row) {
+		return $row['user_id'];
+	}   
+	if(count($results) == 0)
+	{
+		echo "<br>";
+		echo "There are no results";
+		die();
 	}
+		//echo $results;
+}
 
 	//Returns a list of exerciseid that the given userid is struggling with
-	function isStruggling($userid) {
-		try {
-			$handle = new PDO('mysql:host=127.0.0.1; dbname=edulution',
+function isStruggling($userid) {
+	try {
+		$handle = new PDO('mysql:host=127.0.0.1; dbname=edulution',
                           'root', '');//TODO DATABASE GOES HERE);
-		} catch (PDOException $e) {
-			die("Error connecting to database: ". $e->getMessage());
-		}
-		$newuserid = "'" . $userid . "'";
-		$sql = "SELECT exercise_id FROM exercise_log WHERE user_id = $newuserid AND struggling = 1";
+	} catch (PDOException $e) {
+		die("Error connecting to database: ". $e->getMessage());
+	}
+	$newuserid = "'" . $userid . "'";
+	$sql = "SELECT exercise_id FROM exercise_log WHERE user_id = $newuserid AND struggling = 1";
 
-		$query = $handle->prepare($sql);
-		$query->execute();
+	$query = $handle->prepare($sql);
+	$query->execute();
 
 		//query fails
-		if ($query->execute() === FALSE) {
-			die('Error running query: '.implode($query->errorInfo(), ' '));
-		}
+	if ($query->execute() === FALSE) {
+		die('Error running query: '.implode($query->errorInfo(), ' '));
+	}
 		//puts result into assoc array
-		$results = $query->fetchAll();
+	$results = $query->fetchAll();
 
-		foreach ($results as $row) {
+	foreach ($results as $row) {
       		//return $row['user_id'];
-      		$huy = $row['exercise_id'];
-      		suggestExercise($huy);
-      		echo "<br>";
-   		}   
-   		if(count($results) == 0)
-    	{
-			echo "<br>";
-			echo "There are no results";
-			die();
-	    }
+		$huy = $row['exercise_id'];
+		getSequence($huy);
+		//suggestExercise($huy);
+		echo "<br>";
+	}   
+	if(count($results) == 0)
+	{
+		echo "<br>";
+		echo "There are no results";
+		die();
+	}
 
 		//TODO -------- what to do if results are empty? die() at the end
-		return $results;
+	return $results;
 		//Will be a list of exercise_id that the student is flagged as struggling with
-	}
+}
 
-	function getSequence($exerciseid) {
-		try {
-			$handle = new PDO('mysql:host=127.0.0.1; dbname=edulution',
+//returns the sequence of the exercise in the playlist
+function getSequence($exerciseid) {
+	//exerciseid is an array?
+	try {
+		$handle = new PDO('mysql:host=127.0.0.1; dbname=edulution',
                           'root', '');//TODO DATABASE GOES HERE);
-		} catch (PDOException $e) {
-			die("Error connecting to database: ". $e->getMessage());
-		}
-		$sql = "SELECT sequence FROM playlist WHERE exercise_id = $exerciseid";
-		$query = $handle->prepare($sql);
-		$query->execute();
+	} catch (PDOException $e) {
+		die("Error connecting to database: ". $e->getMessage());
+	}
+	$exercise = '"' . $exerciseid . '"';
+	$sql = "SELECT sequence, exercise_id FROM playlist WHERE exercise_id = $exercise";
+	//echo $sql;
+	$query = $handle->prepare($sql);
+	$query->execute();
 
 		//query fails
-		if ($query->execute() === FALSE) {
-			die('Error running query: '.implode($query->errorInfo(), ' '));
-		}
+	if ($query->execute() === FALSE) {
+		die('Error running query: '.implode($query->errorInfo(), ' '));
+	}
 		//puts result into assoc array
-		$results = $query->fetchAll();
+	$results = $query->fetchAll();
+	foreach ($results as $row) {
+      		//return $row['user_id'];
+		$number = $row['sequence'];
+		$exid = $row['exercise_id'];
+		suggestExercise($number, $exid);
+		echo "<br>";
+	} 
 		//just get the sequence from the assoc array
-	}
+}
 
-	//errr....
-	function suggestExercise($exerciseid, $sequence) {
-		try {
-			$handle = new PDO('mysql:host=127.0.0.1; dbname=edulution',
+	//suggests what exercise to do
+function suggestExercise($exerciseid, $sequence) {
+	// exercseid
+	try {
+		$handle = new PDO('mysql:host=127.0.0.1; dbname=edulution',
                           'root', '');//TODO DATABASE GOES HERE);
-		} catch (PDOException $e) {
-			die("Error connecting to database: ". $e->getMessage());
-		}
-		$sql = "SELECT title, path FROM playlist WHERE exercise_id = $exerciseid AND sequence = $sequence";
-		$query = $handle->prepare($sql);
-		$query->execute();
+	} catch (PDOException $e) {
+		die("Error connecting to database: ". $e->getMessage());
+	}
+	$sql = "SELECT title, path FROM playlist WHERE exercise_id = '$sequence' AND sequence = $exerciseid";
+	//echo $sql;
+	$query = $handle->prepare($sql);
+	$query->execute();
 		//puts result into assoc array
-		$results = $query->fetchAll();
+	$results = $query->fetchAll();
 
-		foreach($results as $row) {
-			echo 
-		}
+	foreach($results as $row) {
+		echo $row['title'];
+		echo "<br>";
+		echo $row['path'];
+		echo "<br>";
 	}
+}
 
-	$user = retrieveUserID("'Brian'", "'Chikosa'");
-	$struggling = isStruggling($user);
-	for(int i = 0; i < $struggling.num_rows(); i++) {
-		$sequence = getSequence($struggling[0]);
-		
-	}
+$user = retrieveUserID("'Brian'", "'Chikosa'");
+$struggling = isStruggling($user);
+
+//for($i = 0; $i < count($struggling); $i++) {
+//	$sequence = getSequence($struggling[$i]);
+
+//}
 
 ?>
