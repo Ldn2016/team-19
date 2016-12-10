@@ -6,7 +6,6 @@
 	mysql_connect('127.0.0.1', $username, $password);
 
 	//Returns the userid of the user with the given first+lastname combination
-	function retrieveUserID(firstname, lastname) {
 	function retrieveUserID($firstname, $lastname) {
 		try {
 			$handle = new PDO('mysql:host=127.0.0.1; dbname=edulution',
@@ -29,9 +28,7 @@
 		return $results;
 	}
 
-
 	//Returns a list of exerciseid that the given userid is struggling with
-	function isStruggling(userid) {
 	function isStruggling($userid) {
 		try {
 			$handle = new PDO('mysql:host=127.0.0.1; dbname=edulution',
@@ -62,9 +59,12 @@
 		} catch (PDOException $e) {
 			die("Error connecting to database: ". $e->getMessage());
 		}
+		//run through the list, run sql queries for all the exerciseid in the list, getting their paths
 		for ($i = 0; i < exerciseid.num_rows() - 1; i++) {
 			$sql = "SELECT exercise_id, item_path FROM Items WHERE exercise_id = "
 		}
+		//put all the paths in an array, then choose a random one?
+		//take the path, get a new exercise id, then return the exercise id
 	}
 
 ?>
