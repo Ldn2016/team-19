@@ -1,3 +1,47 @@
+<style>
+	body {
+		background-color: #4ABDAC;
+		font-family: "Trebuchet MS", Helvetica, sans-serif;
+		padding: 0% 10%;
+		text-align: center;
+	}
+
+	ul {
+    list-style-type: none;
+    margin-left: 20%;
+    margin-right: 20%;
+    padding: 0;
+    overflow: hidden;
+    background-color: #333;
+}
+
+
+
+li a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+   	text-decoration: none;
+}
+
+/* Change the link color to #111 (black) on hover */
+li a:hover {
+    background-color: #111;
+}
+
+footer {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  padding: 1rem;
+  background-color: #004d80;
+  text-align: center;
+  color: white;	
+}
+</style>
+
 <?php
 	//Database definitions
 $username = "root";
@@ -64,7 +108,7 @@ function isStruggling($userid) {
 		$huy = $row['exercise_id'];
 		getSequence($huy);
 		//suggestExercise($huy);
-		echo "<br>";
+		//echo "<br>";
 	}   
 	if(count($results) == 0)
 	{
@@ -125,16 +169,23 @@ function suggestExercise($exerciseid, $sequence) {
 		//puts result into assoc array
 	$results = $query->fetchAll();
 
+	//return $results;
 	foreach($results as $row) {
-		echo $row['title'];
-		echo "<br>";
-		echo $row['path'];
-		echo "<br>";
-	}
+		//echo "<li>".$row['title']." ";
+		echo "<li> <a href = 'http://demo.learningequality.org/learn/" . $row['path'] . "'>" . $row['title'] . "</a></li>";
+	}	
 }
 
-$user = retrieveUserID("'Brian'", "'Chikosa'");
+$first = "'". $_GET['firstname']."'";
+$last = "'".$_GET['lastname']."'";
+echo "<h1> Personalised Learning for " . $_GET['firstname'] . " " . $_GET['lastname'] . "</h1>";
+echo "<hr>";
+echo "<h3>Struggling problems:</h3>";
+echo "<ul>";
+$user = retrieveUserID($first, $last);
 $struggling = isStruggling($user);
+echo "</ul>";
+
 
 //for($i = 0; $i < count($struggling); $i++) {
 //	$sequence = getSequence($struggling[$i]);
@@ -142,3 +193,7 @@ $struggling = isStruggling($user);
 //}
 
 ?>
+
+<footer>
+Edulution demo
+</footer>
