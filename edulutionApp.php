@@ -1,6 +1,10 @@
 <html>
 <head>
 	<style>
+	body {
+		background-color: #4ABDAC;
+	}
+
 		section {
 			color: white;
 			text-align: center;
@@ -9,7 +13,7 @@
 			margin-left: 25%;
 			margin-right: 25%;
 			padding: 20px 20px;
-			background-color: #4ABDAC;
+			background-color: #333;
 			font-family: "Trebuchet MS", Helvetica, sans-serif;
 		} 
 

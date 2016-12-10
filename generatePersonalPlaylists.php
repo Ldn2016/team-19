@@ -41,8 +41,9 @@
 		padding-bottom: 5px;
 	}
 
-	p {
+	p, a {
 		color: white;
+		border: none;
 	}
 </style>
 
@@ -79,7 +80,8 @@ function retrieveUserID($firstname, $lastname) {
 	}   
 	if(count($results) == 0)
 	{
-		echo "<p>There are no results</p>";
+		echo "<p>You don't seem to be struggling with anything at the moment</p>";
+		echo '<a href="#" onClick="alert' . "('Have a medal!')" . '"><img title="Congrats!" /></a>" ';
 		die();
 	}
 		//echo $results;
@@ -113,11 +115,6 @@ function isStruggling($userid) {
 		//suggestExercise($huy);
 		//echo "<br>";
 	}   
-	if(count($results) == 0)
-	{
-		echo "<p>There are no results</p>";
-		die();
-	}
 
 		//TODO -------- what to do if results are empty? die() at the end
 	return $results;
