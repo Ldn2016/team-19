@@ -14,10 +14,10 @@
 			die("Error connecting to database: ". $e->getMessage());
 		}
 		//$sql = "SELECT * FROM Users WHERE user_id = '00855a2465774deda66c0417e16c4a';";
-		$sql = "SELECT * FROM Users WHERE firstname = :n, lastname = :m;";
+		$sql = "SELECT * FROM Users WHERE first_name = $firstname AND last_name = $lastname";
 		$query = $handle->prepare($sql);
-		$query->execute(['n' => $firstname, 'm' => $lastname]);
-
+		$query->execute();
+		//$query->execute(['n' => $firstname, 'm' => $lastname]);
 		//query fails
 		if ($query->execute() === FALSE) {
 			die('Error running query: '.implode($query->errorInfo(), ' '));
@@ -27,17 +27,15 @@
 
 		//TODO -------- what to do if results are empty? die() at the end
 		foreach ($results as $row) {
-      echo $row['user_id'];
-      echo "test";
+      return $row['user_id'];
    		}   
    		if(count($results) == 0)
-   {
-		echo "<br>";
-		echo "There are no results for this team";
-		die();
-   }
+    	{
+			echo "<br>";
+			echo "There are no results";
+			die();
+	    }
 		//echo $results;
-		return $results;
 	}
 
 	//Returns a list of exerciseid that the given userid is struggling with
@@ -48,9 +46,11 @@
 		} catch (PDOException $e) {
 			die("Error connecting to database: ". $e->getMessage());
 		}
-		$sql = "SELECT exercise_id FROM Exercise_log WHERE user_id = :n;";
+		$newuserid = "'" . $userid . "'";
+		$sql = "SELECT exercise_id FROM exercise_log WHERE user_id = $newuserid AND struggling = 1";
+
 		$query = $handle->prepare($sql);
-		$query->execute(['n' => $userid]);
+		$query->execute();
 
 		//query fails
 		if ($query->execute() === FALSE) {
@@ -58,6 +58,19 @@
 		}
 		//puts result into assoc array
 		$results = $query->fetchAll();
+
+		foreach ($results as $row) {
+      		//return $row['user_id'];
+      		$huy = $row['exercise_id'];
+      		suggestExercise($huy);
+      		echo "<br>";
+   		}   
+   		if(count($results) == 0)
+    	{
+			echo "<br>";
+			echo "There are no results";
+			die();
+	    }
 
 		//TODO -------- what to do if results are empty? die() at the end
 		return $results;
@@ -68,7 +81,7 @@
 	function suggestExercise($exerciseid) {
 		try {
 			$handle = new PDO('mysql:host=127.0.0.1; dbname=edulution',
-                          'Exercise_log', '');//TODO DATABASE GOES HERE);
+                          'root', '');//TODO DATABASE GOES HERE);
 		} catch (PDOException $e) {
 			die("Error connecting to database: ". $e->getMessage());
 		}
@@ -80,7 +93,7 @@
 		//take the path, get a new exercise id, then return the exercise id
 	}
 
-	$user = retrieveUserID(null, null);
+	$user = retrieveUserID("'Brian'", "'Chikosa'");
 	isStruggling($user);
 
 ?>
