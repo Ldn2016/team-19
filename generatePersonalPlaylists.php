@@ -9,13 +9,14 @@
 	function retrieveUserID($firstname, $lastname) {
 		try {
 			$handle = new PDO('mysql:host=127.0.0.1; dbname=edulution',
-                          'Users', '');//TODO DATABASE GOES HERE);
+                          'root', '');//TODO DATABASE GOES HERE);
 		} catch (PDOException $e) {
 			die("Error connecting to database: ". $e->getMessage());
 		}
-		$sql = "SELECT userid FROM Users WHERE firstname = :n, lastname = :m;";
+		//$sql = "SELECT * FROM Users WHERE user_id = '00855a2465774deda66c0417e16c4a';";
+		$sql = "SELECT * FROM Users WHERE firstname = :n, lastname = :m;";
 		$query = $handle->prepare($sql);
-		$query->execute(['n' => firstname, 'm' => lastname]);
+		$query->execute(['n' => $firstname, 'm' => $lastname]);
 
 		//query fails
 		if ($query->execute() === FALSE) {
@@ -25,6 +26,17 @@
 		$results = $query->fetchAll();
 
 		//TODO -------- what to do if results are empty? die() at the end
+		foreach ($results as $row) {
+      echo $row['user_id'];
+      echo "test";
+   		}   
+   		if(count($results) == 0)
+   {
+		echo "<br>";
+		echo "There are no results for this team";
+		die();
+   }
+		//echo $results;
 		return $results;
 	}
 
@@ -32,13 +44,13 @@
 	function isStruggling($userid) {
 		try {
 			$handle = new PDO('mysql:host=127.0.0.1; dbname=edulution',
-                          'Exercise_log', '');//TODO DATABASE GOES HERE);
+                          'root', '');//TODO DATABASE GOES HERE);
 		} catch (PDOException $e) {
 			die("Error connecting to database: ". $e->getMessage());
 		}
 		$sql = "SELECT exercise_id FROM Exercise_log WHERE user_id = :n;";
 		$query = $handle->prepare($sql);
-		$query->execute(['n' => userid]);
+		$query->execute(['n' => $userid]);
 
 		//query fails
 		if ($query->execute() === FALSE) {
@@ -53,18 +65,22 @@
 	}
 
 	//errr....
-	function suggestExercise(exerciseid) {
+	function suggestExercise($exerciseid) {
 		try {
-			$handle = new PDO(//TODO DATABASE GOES HERE);
+			$handle = new PDO('mysql:host=127.0.0.1; dbname=edulution',
+                          'Exercise_log', '');//TODO DATABASE GOES HERE);
 		} catch (PDOException $e) {
 			die("Error connecting to database: ". $e->getMessage());
 		}
 		//run through the list, run sql queries for all the exerciseid in the list, getting their paths
-		for ($i = 0; i < exerciseid.num_rows() - 1; i++) {
-			$sql = "SELECT exercise_id, item_path FROM Items WHERE exercise_id = "
-		}
+		//for ($i = 0; i < exerciseid.num_rows() - 1; i++) {
+		//	$sql = "SELECT exercise_id, item_path FROM Items WHERE exercise_id = "
+		//}
 		//put all the paths in an array, then choose a random one?
 		//take the path, get a new exercise id, then return the exercise id
 	}
+
+	$user = retrieveUserID(null, null);
+	isStruggling($user);
 
 ?>
