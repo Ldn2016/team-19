@@ -7,39 +7,43 @@
 	}
 
 	ul {
-    list-style-type: none;
-    margin-left: 20%;
-    margin-right: 20%;
-    padding: 0;
-    overflow: hidden;
-    background-color: #333;
-}
+		list-style-type: none;
+		margin-left: 20%;
+		margin-right: 20%;
+		padding: 0;
+		overflow: hidden;
+		background-color: #333;
+	}
 
 
 
-li a {
-    display: block;
-    color: white;
-    text-align: center;
-    padding: 14px 16px;
-   	text-decoration: none;
-}
+	li a {
+		display: block;
+		color: white;
+		text-align: center;
+		padding: 14px 16px;
+		text-decoration: none;
+	}
 
-/* Change the link color to #111 (black) on hover */
-li a:hover {
-    background-color: #111;
-}
+	/* Change the link color to #111 (black) on hover */
+	li a:hover {
+		background-color: #111;
+	}
 
-footer {
-  position: absolute;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  padding: 1rem;
-  background-color: #004d80;
-  text-align: center;
-  color: white;	
-}
+	footer {
+		position:fixed;
+		left:0px;
+		bottom:0px;
+		height:20px;
+		width:100%;
+		background:#999;
+		padding-top: 10px;
+		padding-bottom: 5px;
+	}
+
+	p {
+		color: white;
+	}
 </style>
 
 <?php
@@ -75,8 +79,7 @@ function retrieveUserID($firstname, $lastname) {
 	}   
 	if(count($results) == 0)
 	{
-		echo "<br>";
-		echo "There are no results";
+		echo "<p>There are no results</p>";
 		die();
 	}
 		//echo $results;
@@ -112,8 +115,7 @@ function isStruggling($userid) {
 	}   
 	if(count($results) == 0)
 	{
-		echo "<br>";
-		echo "There are no results";
+		echo "<p>There are no results</p>";
 		die();
 	}
 
@@ -195,5 +197,5 @@ echo "</ul>";
 ?>
 
 <footer>
-Edulution demo
+	Edulution demo
 </footer>
