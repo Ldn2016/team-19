@@ -1,0 +1,22 @@
+Problem domain
+
+Usability
+	KALite navigation (finding exercises)
+	Too much english - too much words
+	There's no visible reward system
+	App goes to the KALite system instead of running exercises in the app
+	Currently no ability to choose other courses than Math
+
+Data tracking
+	No personalised course progression/content
+		Recommendations for next exercises
+		Recommendations for easier exercises on failure of a exercise
+	No history of completed/attempted exercises
+
+
+
+Excellent student too long, struggling student too brief 
+
+Logins
+	coachflb:coachflb
+	CHL166696
