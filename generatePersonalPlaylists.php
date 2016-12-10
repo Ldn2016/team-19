@@ -1,17 +1,18 @@
 <?php
 	//Database definitions
-	$username = "";
+	$username = "root";
 	$password = "";
 	//Connects to database at the same location as this script
 	mysql_connect('127.0.0.1', $username, $password);
 
-	function retrieveUserID(firstname, lastname) {
+	function retrieveUserID($firstname, $lastname) {
 		try {
-			$handle = new PDO(//TODO DATABASE GOES HERE);
+			$handle = new PDO('mysql:host=127.0.0.1; dbname=edulution',
+                          'Users', '');//TODO DATABASE GOES HERE);
 		} catch (PDOException $e) {
 			die("Error connecting to database: ". $e->getMessage());
 		}
-		$sql = "SELECT userid FROM Users WHERE firstname = :n, lastname = :n;";
+		$sql = "SELECT userid FROM Users WHERE firstname = :n, lastname = :m;";
 		$query = $handle->prepare($sql);
 		$query->execute(['n' => firstname, 'm' => lastname]);
 
@@ -26,15 +27,16 @@
 		return $results;
 	}
 
-	function isStruggling(userid) {
+	function isStruggling($userid) {
 		try {
-			$handle = new PDO(//TODO DATABASE GOES HERE);
+			$handle = new PDO('mysql:host=127.0.0.1; dbname=edulution',
+                          'Exercise_log', '');//TODO DATABASE GOES HERE);
 		} catch (PDOException $e) {
 			die("Error connecting to database: ". $e->getMessage());
 		}
 		$sql = "SELECT exercise_id FROM Exercise_log WHERE user_id = :n;";
 		$query = $handle->prepare($sql);
-		$query->execute(['n' => userid);
+		$query->execute(['n' => userid]);
 
 		//query fails
 		if ($query->execute() === FALSE) {
