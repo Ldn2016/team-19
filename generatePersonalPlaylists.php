@@ -81,7 +81,7 @@ function retrieveUserID($firstname, $lastname) {
 	if(count($results) == 0)
 	{
 		echo "<p>You don't seem to be struggling with anything at the moment</p>";
-		echo '<a href="#" onClick="alert' . "('Have a medal!')" . '"><img title="Congrats!" /></a>" ';
+		echo '<a href="#" onClick="alert' . "('Have a medal!')" . '"><img title="Well Done!" /></a>" ';
 		die();
 	}
 		//echo $results;
